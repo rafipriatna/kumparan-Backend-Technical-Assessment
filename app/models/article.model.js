@@ -22,14 +22,14 @@ Article.getAll = async (qry, author, page, result) => {
     if (qry || author) {
         query += ` WHERE`
         if (qry) {
-            query += ` title LIKE '%${qry}%' OR body LIKE '%${qry}%'`
+            query += ` title LIKE ${sql.escape(`%${qry}%`)} OR body LIKE ${sql.escape(`%${qry}%`)}`
             if (author) {
                 query += ` AND`
             }
         }
 
         if (author) {
-            query += ` author_id = (SELECT id FROM authors WHERE name LIKE '%${author}%')`
+            query += ` author_id = (SELECT id FROM authors WHERE name LIKE ${sql.escape(`%${author}%`)})`
         }
     }
 
