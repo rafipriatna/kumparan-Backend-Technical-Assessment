@@ -61,7 +61,7 @@ function fetchData(data) {
 }
 
 function paginationResponse(totalArticles, limit, currentPage) {
-    const url = "http://localhost:8000/api/articles/"
+    const url = "http://localhost:8000/articles/"
     const totalPages = Math.ceil(totalArticles / limit)
     const current = url + currentPage
     const previous = (currentPage - 1) < 1 ? null : url + (currentPage - 1)
@@ -97,7 +97,6 @@ function filter(articles, query, author) {
 
 function response(articles, totalArticles, page, qry, author) {
     const limit = 10
-    const pagination = paginationResponse(totalArticles, limit, page)
 
     if (qry || author) {
         let tempArticle = filter(articles, qry, author)
@@ -106,9 +105,11 @@ function response(articles, totalArticles, page, qry, author) {
     } else {
         articles = paginate(articles, limit, page)
     }
+    const pagination = paginationResponse(totalArticles, limit, page)
+
     return {
         pagination,
         total_articles: totalArticles,
-        article: articles
+        articles: articles
     }
 }
