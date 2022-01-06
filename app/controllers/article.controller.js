@@ -9,10 +9,10 @@ exports.create = (req, res) => {
         body: req.body.body,
     })
 
-    Article.create(values, (err, data) => {
+    Article.create(values, (err, data, msg) => {
         if (err) return res.status(500).json({ message: err.message || "Internal Server Error." })
 
-        return res.json({ message: "Success create an article.", data })
+        return res.json({ message: msg, data })
     })
 }
 
@@ -21,9 +21,9 @@ exports.getAll = (req, res) => {
     const author = req.query.author
     const page = req.params.page < 0 ? 1 : parseInt(req.params.page) || 1
 
-    Article.getAll(qry, author, page, (err, data) => {
+    Article.getAll(qry, author, page, (err, data, msg) => {
         if (err) return res.status(500).json({ message: err.message || "Internal Server Error." })
 
-        return res.json({ message: "List of articles.", data })
+        return res.json({ message: msg, data })
     })
 }
