@@ -17,6 +17,7 @@ Article.create = (data, result) => {
 }
 
 Article.getAll = async (qry, author, page, result) => {
+    const url = "http://localhost:8000/api/articles/"
     let query = "SELECT name as author, title, body, created_at FROM articles INNER JOIN authors ON articles.author_id = authors.id"
 
     if (qry || author) {
@@ -48,9 +49,16 @@ Article.getAll = async (qry, author, page, result) => {
     sql.query(query, (err, res) => {
         if (err) return result(err, null)
         const totalpages = Math.ceil(totalArticles / limit)
+        const previous = (page - 1) < 1 ? null : url + (page - 1)
+        const next = (page + 1) > totalpages ? null : url + (page + 1)
+
         const data = {
-            current_page: page,
-            total_pages: totalpages,
+            pagination: {
+                total: totalpages,
+                current: url + page,
+                previous,
+                next
+            },
             total_articles: totalArticles,
             articles: res
         }
