@@ -1,12 +1,12 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const url = "http://localhost:8000"
+const url = require("../index")
 
 chai.use(chaiHttp);
 chai.should();
 
-describe("Articles Test", () => {
-    describe("GET /artice", () => {
+describe("Articles Test", async () => {
+    await describe("GET /article", () => {
       it("should get all articles", (done) => {
         chai.request(url)
           .get('/articles')
@@ -53,7 +53,7 @@ describe("Articles Test", () => {
   
     });
 
-    describe("POST /artice", () => {
+    await describe("POST /article", () => {
         it("should do post an article", (done) => {
             chai.request(url)
               .post('/articles')
