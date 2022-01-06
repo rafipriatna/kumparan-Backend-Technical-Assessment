@@ -2,7 +2,7 @@ const Article = require("../models/article.model")
 const NodeCache = require("node-cache")
 const cache = new NodeCache()
 
-exports.create = async (req, res) => {
+exports.create = (req, res) => {
     if (Object.keys(req.body).length === 0) return res.status(400).json({ message: "Article cannot be empty!" })
 
     const values = new Article({
@@ -11,13 +11,13 @@ exports.create = async (req, res) => {
         body: req.body.body,
     })
 
-    Article.create(values, async (err, data) => {
+    Article.create(values, (err, data) => {
         if (err) return res.status(500).json({ message: err.message || "Internal Server Error." })
 
-        Article.getAll(async (err, dataArticles) => {
+        Article.getAll((err, dataArticles) => {
             if (err) return res.status(500).json({ message: err.message || "Internal Server Error." })
             let articles = fetchData(dataArticles)
-            await cache.set("articles", articles, 100000)
+            cache.set("articles", articles, 100000)
             return res.json({ message: "Article created.", data })
         })
     })
